@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Time - نظام إدارة الوقت للمعلمين</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4CAF50">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Teacher Time">
+    <meta name="description" content="نظام متكامل لإدارة الوقت والجداول الدراسية للمعلمين">
+    <meta name="keywords" content="معلم, وقت, جدول, تعليم, إدارة">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" href="assets/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="assets/icons/icon-152x152.png">
+    
+    <!-- Splash Screen -->
+    <link rel="apple-touch-startup-image" href="assets/images/splash-screen.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="app.js" as="script">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>⏰ Teacher Time</h1>
+            <p class="subtitle">نظام إدارة الوقت للمعلمين</p>
+        </header>
+
+        <main class="main-content">
+            <div class="timer-section">
+                <div class="timer-display" id="timerDisplay">25:00</div>
+                <div class="timer-controls">
+                    <button class="btn btn-primary" id="startBtn">بدء</button>
+                    <button class="btn btn-secondary" id="pauseBtn">إيقاف</button>
+                    <button class="btn btn-danger" id="resetBtn">إعادة تعيين</button>
+                </div>
+            </div>
+
+            <div class="tasks-section">
+                <h2>المهام اليومية</h2>
+                <div class="task-input">
+                    <input type="text" id="taskInput" placeholder="أضف مهمة جديدة...">
+                    <button class="btn btn-success" id="addTaskBtn">إضافة</button>
+                </div>
+                <ul class="tasks-list" id="tasksList"></ul>
+            </div>
+
+            <div class="stats-section">
+                <h2>الإحصائيات</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number" id="sessionsCount">0</span>
+                        <span class="stat-label">جلسات العمل</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="tasksCount">0</span>
+                        <span class="stat-label">المهام المكتملة</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>تم التطوير خصيصاً للمعلمين ✨</p>
+            <div class="pwa-install" id="installContainer" style="display: none;">
+                <button class="btn btn-install" id="installBtn">تثبيت التطبيق</button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification hidden"></div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register('sw.js');
+                    console.log('✅ Service Worker registered:', registration);
+                    
+                    // Check for updates
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        console.log('🔄 Service Worker update found!');
+                    });
+                } catch (error) {
+                    console.error('❌ Service Worker registration failed:', error);
+                }
+            });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        const installContainer = document.getElementById('installContainer');
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installContainer.style.display = 'block';
+            
+            installBtn.addEventListener('click', async () => {
+                installContainer.style.display = 'none';
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null;
+            });
+        });
+
+        window.addEventListener('appinstalled', () => {
+            console.log('🎉 PWA was installed');
+            installContainer.style.display = 'none';
+            deferredPrompt = null;
+        });
+    </script>
+</body>
+</html>
