@@ -3,132 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Time - نظام إدارة الوقت للمعلمين</title>
+    <title>تطبيق توقيت المعلم - النسخة المطورة</title>
     
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#4CAF50">
+    <meta name="theme-color" content="#2E86AB">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Teacher Time">
-    <meta name="description" content="نظام متكامل لإدارة الوقت والجداول الدراسية للمعلمين">
-    <meta name="keywords" content="معلم, وقت, جدول, تعليم, إدارة">
-    
-    <!-- Manifest -->
-    <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
-    
-    <!-- Icons -->
-    <link rel="icon" type="image/png" href="assets/icons/icon-72x72.png">
+    <meta name="apple-mobile-web-app-title" content="تطبيق توقيت المعلم">
     <link rel="apple-touch-icon" href="assets/icons/icon-152x152.png">
+    <link rel="manifest" href="manifest.json">
     
-    <!-- Splash Screen -->
-    <link rel="apple-touch-startup-image" href="assets/images/splash-screen.png">
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="style.css">
-    
-    <!-- Preload critical resources -->
-    <link rel="preload" href="style.css" as="style">
-    <link rel="preload" href="app.js" as="script">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="app-container">
-        <header class="app-header">
-            <h1>⏰ Teacher Time</h1>
-            <p class="subtitle">نظام إدارة الوقت للمعلمين</p>
+    <div class="container">
+        <header>
+            <div class="app-title">تطبيق توقيت المعلم</div>
+            <div class="teacher-info" id="teacherInfo">أ. أحمد - الرياضيات - مدرسة النجاح</div>
         </header>
-
-        <main class="main-content">
-            <div class="timer-section">
-                <div class="timer-display" id="timerDisplay">25:00</div>
-                <div class="timer-controls">
-                    <button class="btn btn-primary" id="startBtn">بدء</button>
-                    <button class="btn btn-secondary" id="pauseBtn">إيقاف</button>
-                    <button class="btn btn-danger" id="resetBtn">إعادة تعيين</button>
-                </div>
-            </div>
-
-            <div class="tasks-section">
-                <h2>المهام اليومية</h2>
-                <div class="task-input">
-                    <input type="text" id="taskInput" placeholder="أضف مهمة جديدة...">
-                    <button class="btn btn-success" id="addTaskBtn">إضافة</button>
-                </div>
-                <ul class="tasks-list" id="tasksList"></ul>
-            </div>
-
-            <div class="stats-section">
-                <h2>الإحصائيات</h2>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <span class="stat-number" id="sessionsCount">0</span>
-                        <span class="stat-label">جلسات العمل</span>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="countdown">العداد</div>
+            <div class="tab" data-tab="schedule">الجدول</div>
+            <div class="tab" data-tab="settings">الإعدادات</div>
+        </div>
+        
+        <div class="content">
+            <!-- شاشة العداد التنازلي -->
+            <div class="screen active" id="countdown">
+                <h2>الحصة الحالية</h2>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalClasses">20</div>
+                        <div class="stat-label">إجمالي الحصص</div>
                     </div>
-                    <div class="stat-card">
-                        <span class="stat-number" id="tasksCount">0</span>
-                        <span class="stat-label">المهام المكتملة</span>
+                    <div class="stat-item">
+                        <div class="stat-value" id="completedClasses">5</div>
+                        <div class="stat-label">الحصص المنجزة</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="remainingClasses">15</div>
+                        <div class="stat-label">الحصص المتبقية</div>
                     </div>
                 </div>
+                
+                <div class="countdown-container" id="currentClassContainer">
+                    <div class="current-class" id="currentClassTitle">لا توجد حصة حالية</div>
+                    <div class="countdown" id="timer">--:--</div>
+                    <div id="countdownLabel">متبقي للحصة</div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress" id="classProgress"></div>
+                    </div>
+                    
+                    <div id="classTimeRange">--:-- - --:--</div>
+                </div>
+                
+                <div class="next-class" id="nextClassContainer">
+                    <h3>الحصة التالية</h3>
+                    <div id="nextClassDetails">لا توجد حصة تالية</div>
+                    <div id="nextClassTime">--:-- - --:--</div>
+                </div>
+                
+                <button class="secondary-btn" id="btnMarkCompleted">تعليم الحصة منجزة</button>
             </div>
-        </main>
-
-        <footer class="app-footer">
-            <p>تم التطوير خصيصاً للمعلمين ✨</p>
-            <div class="pwa-install" id="installContainer" style="display: none;">
-                <button class="btn btn-install" id="installBtn">تثبيت التطبيق</button>
+            
+            <!-- شاشة الجدول الأسبوعي -->
+            <div class="screen" id="schedule">
+                <h2>الجدول الأسبوعي</h2>
+                
+                <table class="schedule-table" id="weeklyScheduleTable">
+                    <thead>
+                        <tr>
+                            <th>اليوم/الحصة</th>
+                            <th>طابور<br>7:30-8:00</th>
+                            <th>الأولى<br>8:00-8:40</th>
+                            <th>الثانية<br>8:40-9:20</th>
+                            <th>الثالثة<br>9:20-10:00</th>
+                            <th>استراحة<br>10:00-10:30</th>
+                            <th>الرابعة<br>10:30-11:10</th>
+                            <th>الخامسة<br>11:10-11:50</th>
+                            <th>السادسة<br>11:50-12:30</th>
+                            <th>السابعة<br>12:30-13:00</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scheduleTableBody">
+                        <!-- سيتم ملؤه بالجافاسكريبت -->
+                    </tbody>
+                </table>
+                
+                <button class="secondary-btn" id="btnEditSchedule">تعديل الجدول</button>
             </div>
-        </footer>
+            
+            <!-- شاشة الإعدادات -->
+            <div class="screen" id="settings">
+                <h2>إعدادات المعلم</h2>
+                
+                <div class="input-group">
+                    <label for="teacherName">اسم المعلم</label>
+                    <input type="text" id="teacherName" value="أ. أحمد محمد">
+                </div>
+                
+                <div class="input-group">
+                    <label for="schoolName">اسم المدرسة</label>
+                    <input type="text" id="schoolName" value="مدرسة النجاح الثانوية">
+                </div>
+                
+                <div class="input-group">
+                    <label for="subjectName">المادة</label>
+                    <input type="text" id="subjectName" value="الرياضيات">
+                </div>
+                
+                <div class="input-group">
+                    <label for="weeklyQuota">النصاب الأسبوعي (عدد الحصص)</label>
+                    <input type="number" id="weeklyQuota" value="20" min="1" max="35">
+                </div>
+                
+                <h3 style="margin-top: 30px; border-bottom: 1px solid #eee; padding-bottom: 10px;">توزيع الحصص الأسبوعي</h3>
+                
+                <div id="weeklyScheduleSetup">
+                    <!-- سيتم ملؤه بالجافاسكريبت -->
+                </div>
+                
+                <button id="saveSettings">حفظ الإعدادات والجدول</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        <div id="notificationText">تنبيه: الحصة التالية ستبدأ خلال 5 دقائق</div>
     </div>
 
-    <!-- Notification -->
-    <div id="notification" class="notification hidden"></div>
+    <!-- زر تثبيت PWA -->
+    <button class="install-btn" id="installButton" style="display: none;">
+        📲 تثبيت التطبيق
+    </button>
 
-    <!-- Scripts -->
-    <script src="app.js"></script>
-    
-    <!-- Service Worker Registration -->
-    <script>
-        // Register Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', async () => {
-                try {
-                    const registration = await navigator.serviceWorker.register('sw.js');
-                    console.log('✅ Service Worker registered:', registration);
-                    
-                    // Check for updates
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        console.log('🔄 Service Worker update found!');
-                    });
-                } catch (error) {
-                    console.error('❌ Service Worker registration failed:', error);
-                }
-            });
-        }
-
-        // PWA Install Prompt
-        let deferredPrompt;
-        const installContainer = document.getElementById('installContainer');
-        const installBtn = document.getElementById('installBtn');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installContainer.style.display = 'block';
-            
-            installBtn.addEventListener('click', async () => {
-                installContainer.style.display = 'none';
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response to the install prompt: ${outcome}`);
-                deferredPrompt = null;
-            });
-        });
-
-        window.addEventListener('appinstalled', () => {
-            console.log('🎉 PWA was installed');
-            installContainer.style.display = 'none';
-            deferredPrompt = null;
-        });
-    </script>
+    <script src="js/storage.js"></script>
+    <script src="js/schedule.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/pwa.js"></script>
 </body>
 </html>
