@@ -1,0 +1,406 @@
+/* تنسيقات عامة */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #2E86AB, #A23B72);
+    color: #333;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+header {
+    background-color: #2E86AB;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.app-title {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.teacher-info {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.tabs {
+    display: flex;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
+
+.tab.active {
+    background-color: white;
+    border-bottom: 3px solid #2E86AB;
+    color: #2E86AB;
+}
+
+.content {
+    padding: 20px;
+    min-height: 500px;
+}
+
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+h2 {
+    color: #2E86AB;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+button {
+    background-color: #2E86AB;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    width: 100%;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #1a6a8f;
+}
+
+.secondary-btn {
+    background-color: #A23B72;
+}
+
+.secondary-btn:hover {
+    background-color: #7c2a57;
+}
+
+.countdown-container {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.current-class {
+    font-size: 1.2rem;
+    color: #2E86AB;
+    margin-bottom: 10px;
+}
+
+.countdown {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #A23B72;
+    margin: 15px 0;
+}
+
+.progress-bar {
+    height: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.progress {
+    height: 100%;
+    background-color: #F18F01;
+    width: 30%;
+}
+
+.next-class {
+    background-color: #e8f4fc;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.85rem;
+}
+
+.schedule-table th, .schedule-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.schedule-table th {
+    background-color: #2E86AB;
+    color: white;
+}
+
+.schedule-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.empty-slot {
+    background-color: #f8f8f8;
+    color: #999;
+    font-style: italic;
+}
+
+.break-time {
+    background-color: #ffeaa7;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 10px 0;
+    text-align: center;
+    font-weight: bold;
+}
+
+.morning-assembly {
+    background-color: #d4edda;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 10px 0;
+    text-align: center;
+    font-weight: bold;
+}
+
+.day-schedule {
+    margin-bottom: 25px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+
+.day-title {
+    font-weight: bold;
+    color: #2E86AB;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.class-slot {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.class-time {
+    width: 130px;
+    font-weight: bold;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.class-details {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+}
+
+.class-details select, .class-details input {
+    flex: 1;
+    padding: 8px;
+    font-size: 0.9rem;
+}
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #F18F01;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    display: none;
+    max-width: 300px;
+    z-index: 1000;
+}
+
+.install-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: #F18F01;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 25px;
+    cursor: pointer;
+    z-index: 1000;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.install-btn:hover {
+    background: #e67e00;
+    transform: translateY(-2px);
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 15px 0;
+    background-color: #e8f4fc;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2E86AB;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.time-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 0.9rem;
+}
+
+.time-table th, .time-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.time-table th {
+    background-color: #2E86AB;
+    color: white;
+}
+
+/* تحسينات للشاشات الصغيرة */
+@media (max-width: 480px) {
+    .container {
+        border-radius: 10px;
+    }
+    
+    .countdown {
+        font-size: 2rem;
+    }
+    
+    .class-details {
+        flex-direction: column;
+    }
+    
+    .schedule-table {
+        font-size: 0.7rem;
+    }
+    
+    .install-btn {
+        bottom: 10px;
+        left: 10px;
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+}
+
+/* تحسينات للوضع الداكن */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #1a5276, #6d214f);
+    }
+    
+    .container {
+        background-color: #2d3436;
+        color: #dfe6e9;
+    }
+    
+    .tabs {
+        background-color: #3d3d3d;
+        border-bottom-color: #555;
+    }
+    
+    .tab.active {
+        background-color: #2d3436;
+        color: #74b9ff;
+    }
+    
+    input, select {
+        background-color: #3d3d3d;
+        color: #dfe6e9;
+        border-color: #555;
+    }
+    
+    .countdown-container {
+        background-color: #3d3d3d;
+    }
+    
+    .next-class {
+        background-color: #3d3d3d;
+    }
+    
+    .schedule-table th, .schedule-table td {
+        border-color: #555;
+    }
+    
+    .schedule-table th {
+        background-color: #1a5276;
+    }
+    
+    .schedule-table tr:nth-child(even) {
+        background-color: #3d3d3d;
+    }
+}
