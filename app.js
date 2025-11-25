@@ -240,4 +240,5 @@ window.addEventListener('load', () => {
     if (!navigator.onLine) {
         document.body.classList.add('offline');
     }
+
 });
